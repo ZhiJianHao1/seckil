@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author ZhiJH
- * @description 互动
+ * @description 活动
  * @date 2024/5/15
  */
 public interface SeckillActivityRepository {
