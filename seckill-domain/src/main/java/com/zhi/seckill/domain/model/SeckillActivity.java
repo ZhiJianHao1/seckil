@@ -1,5 +1,8 @@
 package com.zhi.seckill.domain.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,6 +14,7 @@ import java.util.Date;
 public class SeckillActivity implements Serializable {
     private static final long serialVersionUID = -3859403735063141008L;
     // 活动id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     // 活动名称
     private String activityName;

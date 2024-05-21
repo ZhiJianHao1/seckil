@@ -1,5 +1,7 @@
 package com.zhi.seckill.domain.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,10 +17,12 @@ public class SeckillGoods implements Serializable {
     private static final long serialVersionUID = -7001712360323543555L;
 
     // 数据id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     // 商品名称
     private String goodsName;
     // 秒杀活动id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long activityId;
     // 活动开始时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")

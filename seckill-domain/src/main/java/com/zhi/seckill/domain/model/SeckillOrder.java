@@ -1,5 +1,7 @@
 package com.zhi.seckill.domain.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,10 +17,12 @@ public class SeckillOrder implements Serializable {
 
     private static final long serialVersionUID = 2200936915014755403L;
     // 订单Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     // 用户id
     private Long userId;
     // 商品id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long goodsId;
     // 商品名称
     private String goodsName;
@@ -29,6 +33,7 @@ public class SeckillOrder implements Serializable {
     // 订单总金额
     private BigDecimal orderPrice;
     // 活动id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long activityId;
     // 订单状态 1：已创建 2：已支付 0：已取消 -1：已删除
     private Integer status;
