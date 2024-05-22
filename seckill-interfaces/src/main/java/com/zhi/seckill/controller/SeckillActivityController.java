@@ -1,9 +1,10 @@
 package com.zhi.seckill.controller;
 
+import com.zhi.seckill.application.common.SeckillActivityCommand;
 import com.zhi.seckill.application.service.SeckillActivityService;
 import com.zhi.seckill.domain.code.HttpCode;
-import com.zhi.seckill.domain.dto.SeckillActivityDTO;
-import com.zhi.seckill.domain.model.SeckillActivity;
+import com.zhi.seckill.domain.model.dto.SeckillActivityDTO;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
 import com.zhi.seckill.domain.response.ResponseMessage;
 import com.zhi.seckill.domain.response.ResponseMessageBuilder;
 import com.zhi.seckill.infrastructure.utils.date.JodaDateTimeUtils;
@@ -28,8 +29,8 @@ public class SeckillActivityController {
      * 保存秒杀活动
      */
     @RequestMapping(value = "/saveSeckillActivity", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseMessage<String> saveSeckillUserActivity(@RequestBody SeckillActivityDTO seckillActivityDTO) {
-        seckillActivityService.saveSeckillActivityDTO(seckillActivityDTO);
+    public ResponseMessage<String> saveSeckillUserActivity(@RequestBody SeckillActivityCommand seckillActivityCommand) {
+        seckillActivityService.saveSeckillActivityDTO(seckillActivityCommand);
         return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode());
     }
 

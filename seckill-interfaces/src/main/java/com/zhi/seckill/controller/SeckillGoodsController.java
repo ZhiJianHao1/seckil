@@ -2,8 +2,8 @@ package com.zhi.seckill.controller;
 
 import com.zhi.seckill.application.service.SeckillGoodsService;
 import com.zhi.seckill.domain.code.HttpCode;
-import com.zhi.seckill.domain.dto.SeckillGoodsDTO;
-import com.zhi.seckill.domain.model.SeckillGoods;
+import com.zhi.seckill.domain.model.dto.SeckillGoodsDTO;
+import com.zhi.seckill.domain.model.entity.SeckillGoods;
 import com.zhi.seckill.domain.response.ResponseMessage;
 import com.zhi.seckill.domain.response.ResponseMessageBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

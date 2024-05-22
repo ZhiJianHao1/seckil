@@ -2,7 +2,7 @@ package com.zhi.seckill.infrastructure.repository;
 
 import com.zhi.seckill.domain.code.HttpCode;
 import com.zhi.seckill.domain.exception.SeckillException;
-import com.zhi.seckill.domain.model.SeckillGoods;
+import com.zhi.seckill.domain.model.entity.SeckillGoods;
 import com.zhi.seckill.domain.repository.SeckillGoodsRepository;
 import com.zhi.seckill.infrastructure.mapper.SeckillGoodsMapper;
 import org.springframework.beans.factory.annotation.Autowired;

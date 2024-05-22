@@ -1,6 +1,6 @@
 package com.zhi.seckill.domain.repository;
 
-import com.zhi.seckill.domain.model.SeckillOrder;
+import com.zhi.seckill.domain.model.entity.SeckillOrder;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.zhi.seckill.application.service;
 
-import com.zhi.seckill.domain.model.SeckillUser;
+import com.zhi.seckill.domain.model.entity.SeckillUser;
 
 /**
  * @author ZhiJH

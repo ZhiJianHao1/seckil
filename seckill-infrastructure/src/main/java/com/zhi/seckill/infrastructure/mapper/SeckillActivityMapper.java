@@ -1,6 +1,6 @@
 package com.zhi.seckill.infrastructure.mapper;
 
-import com.zhi.seckill.domain.model.SeckillActivity;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;

@@ -1,7 +1,6 @@
-package com.zhi.seckill.domain.model;
+package com.zhi.seckill.domain.model.dto;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -10,42 +9,40 @@ import java.util.Date;
 
 /**
  * @author ZhiJH
- * @description 商品信息
- * @date 2024/5/11
+ * @description 商品信息DTO
+ * @date 2024/5/18
  */
-public class SeckillGoods implements Serializable {
-    private static final long serialVersionUID = -7001712360323543555L;
+public class SeckillGoodsDTO implements Serializable {
 
+    private static final long serialVersionUID = 5535833306419234327L;
     // 数据id
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     // 商品名称
     private String goodsName;
     // 秒杀活动id
-    @JsonSerialize(using = ToStringSerializer.class)
     private Long activityId;
     // 活动开始时间
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date startTime;
     // 活动结束时间
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date endTime;
     // 商品原价
     private BigDecimal originalPrice;
-    // 秒杀活动价格
+    // 活动价格
     private BigDecimal activityPrice;
-    // 限购个数
-    private Integer limitNum;
     // 初始库存
     private Integer initialStock;
-    // 当前可用库存
-    private Integer availableStock;
     // 描述
     private String description;
     // 图片
     private String imgUrl;
-    // 秒杀状态： 0：已发布 1：上线 2:下线
+    // 秒杀状态 0:已发布 1：上线 -1：下线
     private Integer status;
+    // 限购数量
+    private Integer limitNum;
 
     public Long getId() {
         return id;
@@ -103,28 +100,12 @@ public class SeckillGoods implements Serializable {
         this.activityPrice = activityPrice;
     }
 
-    public Integer getLimitNum() {
-        return limitNum;
-    }
-
-    public void setLimitNum(Integer limitNum) {
-        this.limitNum = limitNum;
-    }
-
     public Integer getInitialStock() {
         return initialStock;
     }
 
     public void setInitialStock(Integer initialStock) {
         this.initialStock = initialStock;
-    }
-
-    public Integer getAvailableStock() {
-        return availableStock;
-    }
-
-    public void setAvailableStock(Integer availableStock) {
-        this.availableStock = availableStock;
     }
 
     public String getDescription() {
@@ -149,5 +130,13 @@ public class SeckillGoods implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getLimitNum() {
+        return limitNum;
+    }
+
+    public void setLimitNum(Integer limitNum) {
+        this.limitNum = limitNum;
     }
 }

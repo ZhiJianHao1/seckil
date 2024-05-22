@@ -1,6 +1,6 @@
 package com.zhi.seckill.infrastructure.mapper;
 
-import com.zhi.seckill.domain.model.SeckillGoods;
+import com.zhi.seckill.domain.model.entity.SeckillGoods;
 import io.lettuce.core.dynamic.annotation.Param;
 
 import java.util.List;

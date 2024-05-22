@@ -1,6 +1,6 @@
 package com.zhi.seckill.domain.repository;
 
-import com.zhi.seckill.domain.model.SeckillActivity;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
 
 import java.util.Date;
 import java.util.List;

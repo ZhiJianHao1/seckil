@@ -1,7 +1,7 @@
 package com.zhi.seckill.application.service;
 
-import com.zhi.seckill.domain.dto.SeckillGoodsDTO;
-import com.zhi.seckill.domain.model.SeckillGoods;
+import com.zhi.seckill.domain.model.dto.SeckillGoodsDTO;
+import com.zhi.seckill.domain.model.entity.SeckillGoods;
 
 import java.util.List;
 

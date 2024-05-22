@@ -1,4 +1,4 @@
-package com.zhi.seckill.domain.model;
+package com.zhi.seckill.domain.model.entity;
 
 import java.io.Serializable;
 

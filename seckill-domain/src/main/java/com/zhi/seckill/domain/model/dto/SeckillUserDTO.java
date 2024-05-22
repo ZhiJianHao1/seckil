@@ -1,4 +1,4 @@
-package com.zhi.seckill.domain.dto;
+package com.zhi.seckill.domain.model.dto;
 
 import java.io.Serializable;
 

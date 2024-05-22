@@ -1,6 +1,6 @@
 package com.zhi.seckill.infrastructure.repository;
 
-import com.zhi.seckill.domain.model.SeckillUser;
+import com.zhi.seckill.domain.model.entity.SeckillUser;
 import com.zhi.seckill.domain.repository.SeckillUserRepository;
 import com.zhi.seckill.infrastructure.mapper.SeckillUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;

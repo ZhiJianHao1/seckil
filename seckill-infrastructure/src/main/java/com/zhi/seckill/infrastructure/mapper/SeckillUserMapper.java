@@ -1,6 +1,6 @@
 package com.zhi.seckill.infrastructure.mapper;
 
-import com.zhi.seckill.domain.model.SeckillUser;
+import com.zhi.seckill.domain.model.entity.SeckillUser;
 import org.apache.ibatis.annotations.Param;
 
 /**

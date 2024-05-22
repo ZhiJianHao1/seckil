@@ -1,4 +1,4 @@
-package com.zhi.seckill.domain.model;
+package com.zhi.seckill.domain.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

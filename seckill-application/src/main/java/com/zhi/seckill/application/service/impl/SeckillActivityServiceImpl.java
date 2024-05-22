@@ -1,11 +1,13 @@
 package com.zhi.seckill.application.service.impl;
 
+import com.zhi.seckill.application.build.SeckillActivityBuilder;
+import com.zhi.seckill.application.common.SeckillActivityCommand;
 import com.zhi.seckill.application.service.SeckillActivityService;
 import com.zhi.seckill.domain.code.HttpCode;
-import com.zhi.seckill.domain.dto.SeckillActivityDTO;
-import com.zhi.seckill.domain.enums.SeckillActivityStatus;
+import com.zhi.seckill.domain.model.dto.SeckillActivityDTO;
+import com.zhi.seckill.domain.model.enums.SeckillActivityStatus;
 import com.zhi.seckill.domain.exception.SeckillException;
-import com.zhi.seckill.domain.model.SeckillActivity;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
 import com.zhi.seckill.domain.repository.SeckillActivityRepository;
 import com.zhi.seckill.infrastructure.utils.beans.BeanUtil;
 import com.zhi.seckill.infrastructure.utils.id.SnowFlakeFactory;
@@ -29,12 +31,11 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void saveSeckillActivityDTO(SeckillActivityDTO seckillActivityDTO) {
-        if (seckillActivityDTO == null) {
+    public void saveSeckillActivityDTO(SeckillActivityCommand seckillActivityCommand) {
+        if (seckillActivityCommand == null) {
             throw new SeckillException(HttpCode.PARAMS_INVALID);
         }
-        SeckillActivity seckillActivity = new SeckillActivity();
-        BeanUtil.copyProperties(seckillActivityDTO, seckillActivity);
+        SeckillActivity seckillActivity = SeckillActivityBuilder.toSeckillActivity(seckillActivityCommand);
         seckillActivity.setId(SnowFlakeFactory.getSnowFlake().nextId());
         seckillActivity.setStatus(SeckillActivityStatus.PUBLISHED.getCode());
         seckillActivityRepository.saveSeckillActivity(seckillActivity);

@@ -5,7 +5,7 @@ import com.zhi.seckill.application.service.SeckillUserService;
 import com.zhi.seckill.domain.code.HttpCode;
 import com.zhi.seckill.domain.constants.SeckillConstants;
 import com.zhi.seckill.domain.exception.SeckillException;
-import com.zhi.seckill.domain.model.SeckillUser;
+import com.zhi.seckill.domain.model.entity.SeckillUser;
 import com.zhi.seckill.domain.repository.SeckillUserRepository;
 import com.zhi.seckill.infrastructure.shiro.utils.CommonsUtils;
 import com.zhi.seckill.infrastructure.shiro.utils.JwtUtils;

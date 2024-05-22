@@ -1,18 +1,18 @@
-package com.zhi.seckill.domain.enums;
+package com.zhi.seckill.domain.model.enums;
 
 /**
  * @author ZhiJH
- * @description 活动状态
+ * @description 商品状态
  * @date 2024/5/11
  */
-public enum SeckillActivityStatus {
+public enum SeckillGoodsStatus {
     PUBLISHED(0),
     ONLINE(1),
     OFFLINE(-1);
 
     private final Integer code;
 
-    SeckillActivityStatus(Integer code) {
+    SeckillGoodsStatus(Integer code) {
         this.code = code;
     }
 

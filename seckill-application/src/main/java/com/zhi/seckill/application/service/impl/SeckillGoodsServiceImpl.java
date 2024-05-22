@@ -2,11 +2,11 @@ package com.zhi.seckill.application.service.impl;
 
 import com.zhi.seckill.application.service.SeckillGoodsService;
 import com.zhi.seckill.domain.code.HttpCode;
-import com.zhi.seckill.domain.dto.SeckillGoodsDTO;
-import com.zhi.seckill.domain.enums.SeckillGoodsStatus;
+import com.zhi.seckill.domain.model.dto.SeckillGoodsDTO;
+import com.zhi.seckill.domain.model.enums.SeckillGoodsStatus;
 import com.zhi.seckill.domain.exception.SeckillException;
-import com.zhi.seckill.domain.model.SeckillActivity;
-import com.zhi.seckill.domain.model.SeckillGoods;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
+import com.zhi.seckill.domain.model.entity.SeckillGoods;
 import com.zhi.seckill.domain.repository.SeckillActivityRepository;
 import com.zhi.seckill.domain.repository.SeckillGoodsRepository;
 import com.zhi.seckill.infrastructure.utils.beans.BeanUtil;

@@ -1,4 +1,4 @@
-package com.zhi.seckill.domain.enums;
+package com.zhi.seckill.domain.model.enums;
 
 /**
  * @author ZhiJH

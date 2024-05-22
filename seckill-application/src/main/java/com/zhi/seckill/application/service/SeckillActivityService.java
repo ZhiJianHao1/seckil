@@ -1,7 +1,7 @@
 package com.zhi.seckill.application.service;
 
-import com.zhi.seckill.domain.dto.SeckillActivityDTO;
-import com.zhi.seckill.domain.model.SeckillActivity;
+import com.zhi.seckill.application.common.SeckillActivityCommand;
+import com.zhi.seckill.domain.model.entity.SeckillActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface SeckillActivityService {
     /**
      * 保存活动信息
      */
-    void saveSeckillActivityDTO(SeckillActivityDTO seckillActivityDTO);
+    void saveSeckillActivityDTO(SeckillActivityCommand seckillActivityCommand);
 
     /**
      * 根据状态获取活动列表
