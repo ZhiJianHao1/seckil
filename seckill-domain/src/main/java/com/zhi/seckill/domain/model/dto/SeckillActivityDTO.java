@@ -30,6 +30,8 @@ public class SeckillActivityDTO implements Serializable {
     private Integer status;
     // 秒杀活动描述
     private String activityDesc;
+    // 数据版本
+    private Long version;
 
     public Long getId() {
         return id;
@@ -77,5 +79,13 @@ public class SeckillActivityDTO implements Serializable {
 
     public void setActivityDesc(String activityDesc) {
         this.activityDesc = activityDesc;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }
