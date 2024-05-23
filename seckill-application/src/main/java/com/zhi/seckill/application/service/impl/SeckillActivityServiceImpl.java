@@ -1,6 +1,8 @@
 package com.zhi.seckill.application.service.impl;
 
-import com.zhi.seckill.application.build.SeckillActivityBuilder;
+import com.zhi.seckill.application.builder.SeckillActivityBuilder;
+import com.zhi.seckill.application.cache.model.SeckillBusinessCache;
+import com.zhi.seckill.application.cache.service.activity.SeckillActivityListCacheService;
 import com.zhi.seckill.application.common.SeckillActivityCommand;
 import com.zhi.seckill.application.service.SeckillActivityService;
 import com.zhi.seckill.domain.code.HttpCode;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author ZhiJH
@@ -28,6 +31,9 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
 
     @Autowired
     private SeckillActivityRepository seckillActivityRepository;
+
+    @Autowired
+    private SeckillActivityListCacheService seckillActivityListCacheService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -59,5 +65,22 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
     @Override
     public int updateStatus(Integer status, Long id) {
         return seckillActivityRepository.updateStatus(status, id);
+    }
+
+    @Override
+    public List<SeckillActivityDTO> getSeckillActivityList(Integer status, Long version) {
+        SeckillBusinessCache<List<SeckillActivity>> seckillActivityListCache = seckillActivityListCacheService.getCacheActivities(status, version);
+        if (!seckillActivityListCache.isExist()) {
+            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
+        }
+        if (seckillActivityListCache.isRetryLater()) {
+            throw new SeckillException(HttpCode.RETRY_LATER);
+        }
+        return seckillActivityListCache.getData().stream().map((seckillActivity) -> {
+            SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
+            BeanUtil.copyProperties(seckillActivity, seckillActivityDTO);
+            seckillActivityDTO.setVersion(seckillActivityListCache.getVersion());
+            return seckillActivityDTO;
+        }).collect(Collectors.toList());
     }
 }

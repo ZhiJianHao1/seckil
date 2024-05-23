@@ -1,5 +1,6 @@
-package com.zhi.seckill.application.build;
+package com.zhi.seckill.application.builder;
 
+import com.zhi.seckill.application.builder.common.SeckillCommonBuilder;
 import com.zhi.seckill.application.common.SeckillActivityCommand;
 import com.zhi.seckill.domain.model.dto.SeckillActivityDTO;
 import com.zhi.seckill.domain.model.entity.SeckillActivity;
@@ -10,7 +11,7 @@ import com.zhi.seckill.infrastructure.utils.beans.BeanUtil;
  * @description 秒杀活动构建类
  * @date 2024/5/22
  */
-public class SeckillActivityBuilder {
+public class SeckillActivityBuilder extends SeckillCommonBuilder {
     public static SeckillActivity toSeckillActivity(SeckillActivityCommand seckillActivityCommand) {
         if (seckillActivityCommand == null) {
             return null;

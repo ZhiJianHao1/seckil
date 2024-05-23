@@ -27,4 +27,6 @@ public interface DistributedCacheService {
     Boolean delete(String key);
 
     Boolean hasKey(String key);
+
+    Object getObject(String key);
 }

@@ -54,7 +54,7 @@ public class RedisCacheService implements DistributedCacheService {
         if (StringUtils.isEmpty(key) || value == null) {
             return;
         }
-        redisTemplate.opsForValue().set(key, value, expireTime);
+        redisTemplate.opsForValue().set(key, value, expireTime, TimeUnit.SECONDS);
     }
 
     @Override
@@ -100,6 +100,11 @@ public class RedisCacheService implements DistributedCacheService {
     @Override
     public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
+    }
+
+    @Override
+    public Object getObject(String key) {
+        return redisTemplate.opsForValue().get(key);
     }
 
     public RedisTemplate<String, Object> getRedisTemplate() {

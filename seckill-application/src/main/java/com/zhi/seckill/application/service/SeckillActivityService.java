@@ -1,6 +1,7 @@
 package com.zhi.seckill.application.service;
 
 import com.zhi.seckill.application.common.SeckillActivityCommand;
+import com.zhi.seckill.domain.model.dto.SeckillActivityDTO;
 import com.zhi.seckill.domain.model.entity.SeckillActivity;
 
 import java.util.Date;
@@ -36,4 +37,9 @@ public interface SeckillActivityService {
      * 修改状态
      */
     int updateStatus(Integer status, Long id);
+
+    /**
+     * 活动列表
+     */
+    List<SeckillActivityDTO> getSeckillActivityList(Integer status, Long version);
 }
