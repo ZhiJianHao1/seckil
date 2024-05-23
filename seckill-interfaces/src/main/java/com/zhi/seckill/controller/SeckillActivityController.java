@@ -49,6 +49,12 @@ public class SeckillActivityController {
         return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode(), seckillActivityService.getSeckillActivityList(status, version));
     }
 
+    @RequestMapping(value = "/seckillActivity", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseMessage<SeckillActivityDTO> getSeckillActivityById(@RequestParam(value = "id", required = false) Long id,
+                                                                            @RequestParam(value = "version", required = false) Long version) {
+        return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode(), seckillActivityService.getSeckillActivity(id, version));
+    }
+
     /**
      * 根据时间和状态获取活动列表
      */

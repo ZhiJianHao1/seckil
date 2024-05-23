@@ -2,6 +2,7 @@ package com.zhi.seckill.application.service.impl;
 
 import com.zhi.seckill.application.builder.SeckillActivityBuilder;
 import com.zhi.seckill.application.cache.model.SeckillBusinessCache;
+import com.zhi.seckill.application.cache.service.activity.SeckillActivityCacheService;
 import com.zhi.seckill.application.cache.service.activity.SeckillActivityListCacheService;
 import com.zhi.seckill.application.common.SeckillActivityCommand;
 import com.zhi.seckill.application.service.SeckillActivityService;
@@ -34,6 +35,9 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
 
     @Autowired
     private SeckillActivityListCacheService seckillActivityListCacheService;
+
+    @Autowired
+    private SeckillActivityCacheService seckillActivityCacheService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -82,5 +86,23 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
             seckillActivityDTO.setVersion(seckillActivityListCache.getVersion());
             return seckillActivityDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public SeckillActivityDTO getSeckillActivity(Long id, Long version) {
+        if (id == null) {
+            throw new SeckillException(HttpCode.PARAMS_INVALID);
+        }
+        SeckillBusinessCache<SeckillActivity> seckillActivityCache = seckillActivityCacheService.getCachedSeckillActivity(id, version);
+        //
+        if (!seckillActivityCache.isExist()) {
+            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
+        }
+        if (seckillActivityCache.isRetryLater()) {
+            throw new SeckillException(HttpCode.RETRY_LATER);
+        }
+        SeckillActivityDTO seckillActivityDTO = SeckillActivityBuilder.toSeckillActivityDTO(seckillActivityCache.getData());
+        seckillActivityDTO.setVersion(seckillActivityCache.getVersion());
+        return seckillActivityDTO;
     }
 }
