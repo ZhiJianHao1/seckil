@@ -2,6 +2,7 @@ package com.zhi.seckill.application.service.impl;
 
 import com.zhi.seckill.application.builder.SeckillGoodsBuilder;
 import com.zhi.seckill.application.cache.model.SeckillBusinessCache;
+import com.zhi.seckill.application.cache.service.goods.SeckillGoodsCacheService;
 import com.zhi.seckill.application.cache.service.goods.SeckillGoodsListCacheService;
 import com.zhi.seckill.application.common.SeckillGoodsCommand;
 import com.zhi.seckill.application.service.SeckillGoodsService;
@@ -15,6 +16,7 @@ import com.zhi.seckill.domain.repository.SeckillActivityRepository;
 import com.zhi.seckill.domain.repository.SeckillGoodsRepository;
 import com.zhi.seckill.infrastructure.utils.beans.BeanUtil;
 import com.zhi.seckill.infrastructure.utils.id.SnowFlakeFactory;
+import com.zhi.seckill.infrastructure.utils.time.SystemClock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +40,8 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
     private SeckillActivityRepository seckillActivityRepository;
     @Autowired
     private SeckillGoodsListCacheService seckillGoodsListCacheService;
+    @Autowired
+    private SeckillGoodsCacheService seckillGoodsCacheService;
 
 
     @Override
@@ -105,5 +109,24 @@ public class SeckillGoodsServiceImpl implements SeckillGoodsService {
             return seckillGoodsDTO;
         }).collect(Collectors.toList());
         return seckillActivityDTOList;
+    }
+
+    @Override
+    public SeckillGoodsDTO getSeckillGoods(Long id, Long version) {
+        if (id == null){
+            throw new SeckillException(HttpCode.PARAMS_INVALID);
+        }
+        SeckillBusinessCache<SeckillGoods> seckillGoodsCache = seckillGoodsCacheService.getSeckillGoods(id, version);
+        //缓存中不存在商品数据
+        if (!seckillGoodsCache.isExist()){
+            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
+        }
+        //稍后再试，前端需要对这个状态做特殊处理，即不去刷新数据，静默稍后再试
+        if (seckillGoodsCache.isRetryLater()){
+            throw new SeckillException(HttpCode.RETRY_LATER);
+        }
+        SeckillGoodsDTO seckillGoodsDTO = SeckillGoodsBuilder.toSeckillGoodsDTO(seckillGoodsCache.getData());
+        seckillGoodsDTO.setVersion(SystemClock.millisClock().now());
+        return seckillGoodsDTO;
     }
 }
