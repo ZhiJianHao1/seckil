@@ -43,6 +43,8 @@ public class SeckillGoodsDTO implements Serializable {
     private Integer status;
     // 限购数量
     private Integer limitNum;
+    // 版本号
+    private Long version;
 
     public Long getId() {
         return id;
@@ -138,5 +140,13 @@ public class SeckillGoodsDTO implements Serializable {
 
     public void setLimitNum(Integer limitNum) {
         this.limitNum = limitNum;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

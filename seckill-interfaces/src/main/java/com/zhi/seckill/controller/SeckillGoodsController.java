@@ -1,5 +1,6 @@
 package com.zhi.seckill.controller;
 
+import com.zhi.seckill.application.common.SeckillGoodsCommand;
 import com.zhi.seckill.application.service.SeckillGoodsService;
 import com.zhi.seckill.domain.code.HttpCode;
 import com.zhi.seckill.domain.model.dto.SeckillGoodsDTO;
@@ -29,8 +30,8 @@ public class SeckillGoodsController {
      * 保存秒杀商品
      */
     @RequestMapping(value = "/saveSeckillGoods", method = {RequestMethod.GET, RequestMethod.POST})
-    public ResponseMessage<String> saveSeckillActivityDTO(SeckillGoodsDTO seckillGoodsDTO) {
-        seckillGoodsService.saveSeckillGoods(seckillGoodsDTO);
+    public ResponseMessage<String> saveSeckillActivityDTO(SeckillGoodsCommand seckillGoodsCommand) {
+        seckillGoodsService.saveSeckillGoods(seckillGoodsCommand);
         return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode());
     }
 
@@ -57,5 +58,13 @@ public class SeckillGoodsController {
     public ResponseMessage<String> updateStatus(Integer status, Long id){
         seckillGoodsService.updateStatus(status, id);
         return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode());
+    }
+
+    /**
+     * 获取商品列表(带缓存)
+     */
+    @RequestMapping(value = "/getSeckillGoodsList", method = {RequestMethod.GET,RequestMethod.POST})
+    public ResponseMessage<List<SeckillGoodsDTO>> getSeckillGoodsByActivityId(Long activityId, Long version){
+        return ResponseMessageBuilder.build(HttpCode.SUCCESS.getCode(), seckillGoodsService.getSeckillGoodsList(activityId, version));
     }
 }

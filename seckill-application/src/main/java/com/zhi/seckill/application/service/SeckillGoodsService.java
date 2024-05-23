@@ -1,5 +1,6 @@
 package com.zhi.seckill.application.service;
 
+import com.zhi.seckill.application.common.SeckillGoodsCommand;
 import com.zhi.seckill.domain.model.dto.SeckillGoodsDTO;
 import com.zhi.seckill.domain.model.entity.SeckillGoods;
 
@@ -15,7 +16,7 @@ public interface SeckillGoodsService {
     /**
      * 保存商品信息
      */
-    int saveSeckillGoods(SeckillGoodsDTO seckillGoodsDTO);
+    int saveSeckillGoods(SeckillGoodsCommand seckillGoodsCommand);
 
     /**
      * 根据id获取商品信息
@@ -41,4 +42,9 @@ public interface SeckillGoodsService {
      * 获取当前可用库存
      */
     Integer getAvailableStockById(Long id);
+
+    /**
+     * 根据活动id从缓存中获取数据
+     */
+    List<SeckillGoodsDTO> getSeckillGoodsList(Long activityId, Long version);
 }
