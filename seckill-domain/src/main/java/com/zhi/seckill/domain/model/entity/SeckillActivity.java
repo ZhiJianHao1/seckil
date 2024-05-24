@@ -2,6 +2,7 @@ package com.zhi.seckill.domain.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -73,5 +74,16 @@ public class SeckillActivity implements Serializable {
 
     public void setActivityDesc(String activityDesc) {
         this.activityDesc = activityDesc;
+    }
+
+    public boolean validateParams(){
+        if (StringUtils.isEmpty(activityDesc)
+                || startTime == null
+                || endTime == null
+                || endTime.before(startTime)
+                || endTime.before(new Date())){
+            return false;
+        }
+        return true;
     }
 }
