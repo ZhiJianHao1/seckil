@@ -79,7 +79,7 @@ public class SeckillActivityListCacheServiceImpl implements SeckillActivityListC
         logger.info("SeckillActivitesCache|读取分布式缓存|{}", status);
         SeckillBusinessCache<List<SeckillActivity>> seckillActivitiyListCache = SeckillActivityBuilder.getSeckillBusinessCacheList(distributedCacheService.getObject(buildCacheKey(status)),  SeckillActivity.class);
         if (seckillActivitiyListCache == null){
-            seckillActivitiyListCache = tryUpdateSeckillActivityCacheByLock(status);
+            seckillActivitiyListCache = tryUpdateSeckillActivityCacheByLock(status, true);
         }
         if (seckillActivitiyListCache != null && !seckillActivitiyListCache.isRetryLater()){
             if (localCacheUpdatelock.tryLock()){
@@ -98,7 +98,7 @@ public class SeckillActivityListCacheServiceImpl implements SeckillActivityListC
      * 根据状态更新分布式缓存数据
      */
     @Override
-    public SeckillBusinessCache<List<SeckillActivity>> tryUpdateSeckillActivityCacheByLock(Integer status) {
+    public SeckillBusinessCache<List<SeckillActivity>> tryUpdateSeckillActivityCacheByLock(Integer status, boolean doubleCheck) {
         logger.info("SeckillActivitiesCache|更新分布式缓存|{}", status);
         DistributedLock lock = distributedLockFactory.getDistributedLock(SECKILL_ACTIVITES_UPDATE_CACHE_LOCK_KEY.concat(String.valueOf(status)));
         try {
@@ -106,8 +106,14 @@ public class SeckillActivityListCacheServiceImpl implements SeckillActivityListC
             if (!isLockSuccess) {
                 return new SeckillBusinessCache<List<SeckillActivity>>().retryLater();
             }
-            List<SeckillActivity> seckillActivityList = seckillActivityRepository.getSeckillActivityList(status);
             SeckillBusinessCache<List<SeckillActivity>> seckillActivityListCache;
+            if (doubleCheck) {
+                seckillActivityListCache = SeckillActivityBuilder.getSeckillBusinessCacheList(distributedCacheService.getObject(buildCacheKey(status)), SeckillActivity.class);
+                if (seckillActivityListCache != null) {
+                    return seckillActivityListCache;
+                }
+            }
+            List<SeckillActivity> seckillActivityList = seckillActivityRepository.getSeckillActivityList(status);
             if (seckillActivityList == null) {
                 seckillActivityListCache = new SeckillBusinessCache<List<SeckillActivity>>().notExist();
             } else {

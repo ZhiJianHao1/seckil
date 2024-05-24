@@ -67,7 +67,7 @@ public class SeckillGoodsCacheServiceImpl implements SeckillGoodsCacheService {
     private SeckillBusinessCache<SeckillGoods> getDistributedCache(Long goodsId) {
         SeckillBusinessCache<SeckillGoods> seckillBusinessCache = SeckillGoodsBuilder.getSeckillBusinessCache(distributedCacheService.getObject(buildCacheKey(goodsId)), SeckillGoods.class);
         if (seckillBusinessCache == null) {
-            seckillBusinessCache = tryUpdateSeckillGoodsCacheByLock(goodsId);
+            seckillBusinessCache = tryUpdateSeckillGoodsCacheByLock(goodsId, true);
         }
         if (seckillBusinessCache != null && !seckillBusinessCache.isRetryLater()) {
            if (localCacheUpdatelock.tryLock()) {
@@ -83,7 +83,7 @@ public class SeckillGoodsCacheServiceImpl implements SeckillGoodsCacheService {
     }
 
     @Override
-    public SeckillBusinessCache<SeckillGoods> tryUpdateSeckillGoodsCacheByLock(Long goodsId) {
+    public SeckillBusinessCache<SeckillGoods> tryUpdateSeckillGoodsCacheByLock(Long goodsId, boolean doubleCheck) {
         logger.info("SeckillGoodsCache|更新分布式缓存|{}", goodsId);
         //获取分布式锁，保证只有一个线程在更新分布式缓存
         DistributedLock lock = distributedLockFactory.getDistributedLock(SECKILL_GOODS_UPDATE_CACHE_LOCK_KEY.concat(String.valueOf(goodsId)));
@@ -93,8 +93,15 @@ public class SeckillGoodsCacheServiceImpl implements SeckillGoodsCacheService {
             if (!isSuccess){
                 return new SeckillBusinessCache<SeckillGoods>().retryLater();
             }
-            SeckillGoods seckillGoods = seckillGoodsRepository.getSeckillGoodsById(goodsId);
             SeckillBusinessCache<SeckillGoods> seckillGoodsCache;
+            if (doubleCheck) {
+                //获取锁成功后，再次从缓存中获取数据，防止高并发下多个线程争抢锁的过程中，后续的线程在等待1秒的过程中，前面的线程释放了锁，后续的线程获取锁成功后再次更新分布式缓存数据
+                seckillGoodsCache = SeckillGoodsBuilder.getSeckillBusinessCache(distributedCacheService.getObject(buildCacheKey(goodsId)), SeckillGoods.class);
+                if (seckillGoodsCache != null) {
+                    return seckillGoodsCache;
+                }
+            }
+            SeckillGoods seckillGoods = seckillGoodsRepository.getSeckillGoodsById(goodsId);
             if (seckillGoods == null){
                 seckillGoodsCache = new SeckillBusinessCache<SeckillGoods>().notExist();
             }else {

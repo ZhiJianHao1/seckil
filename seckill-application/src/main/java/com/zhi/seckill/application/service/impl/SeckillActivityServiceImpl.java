@@ -74,11 +74,12 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
     @Override
     public List<SeckillActivityDTO> getSeckillActivityList(Integer status, Long version) {
         SeckillBusinessCache<List<SeckillActivity>> seckillActivityListCache = seckillActivityListCacheService.getCacheActivities(status, version);
-        if (!seckillActivityListCache.isExist()) {
-            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
-        }
+        // 稍后重试，前端需要对这个状态做特殊处理，即不去刷新数据，静默稍后重试
         if (seckillActivityListCache.isRetryLater()) {
             throw new SeckillException(HttpCode.RETRY_LATER);
+        }
+        if (!seckillActivityListCache.isExist()) {
+            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
         }
         return seckillActivityListCache.getData().stream().map((seckillActivity) -> {
             SeckillActivityDTO seckillActivityDTO = new SeckillActivityDTO();
@@ -94,12 +95,13 @@ public class SeckillActivityServiceImpl implements SeckillActivityService {
             throw new SeckillException(HttpCode.PARAMS_INVALID);
         }
         SeckillBusinessCache<SeckillActivity> seckillActivityCache = seckillActivityCacheService.getCachedSeckillActivity(id, version);
-        //
-        if (!seckillActivityCache.isExist()) {
-            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
-        }
+        // 稍后重试，前端需要对这个状态做特殊处理，即不去刷新数据，静默稍后重试
         if (seckillActivityCache.isRetryLater()) {
             throw new SeckillException(HttpCode.RETRY_LATER);
+        }
+        // 缓存中不存在数据
+        if (!seckillActivityCache.isExist()) {
+            throw new SeckillException(HttpCode.ACTIVITY_NOT_EXISTS);
         }
         SeckillActivityDTO seckillActivityDTO = SeckillActivityBuilder.toSeckillActivityDTO(seckillActivityCache.getData());
         seckillActivityDTO.setVersion(seckillActivityCache.getVersion());

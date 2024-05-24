@@ -84,7 +84,7 @@ public class SeckillActivityCachedServiceImpl implements SeckillActivityCacheSer
         SeckillBusinessCache<SeckillActivity> seckillBusinessCache = SeckillActivityBuilder.getSeckillBusinessCache(distributedCacheService.getObject(buildCacheKey(activityId)), SeckillActivity.class);
         if (seckillBusinessCache == null) {
             // 尝试更新分布式缓存数据，注意这里只有一个线程能够更新分布式缓存数据
-            seckillBusinessCache = tryUpdateStockActivityCacheByLock(activityId);
+            seckillBusinessCache = tryUpdateStockActivityCacheByLock(activityId, true);
         }
         if (seckillBusinessCache != null && !seckillBusinessCache.isRetryLater()) {
             // 获取本地锁，更新本地缓存数据
@@ -103,7 +103,7 @@ public class SeckillActivityCachedServiceImpl implements SeckillActivityCacheSer
 
 
     @Override
-    public SeckillBusinessCache<SeckillActivity> tryUpdateStockActivityCacheByLock(Long activityId) {
+    public SeckillBusinessCache<SeckillActivity> tryUpdateStockActivityCacheByLock(Long activityId, boolean doubleCheck) {
         logger.info("SeckillActivityCache 更新分布式缓存数据|{}", activityId);
         // 获取分布式锁
         DistributedLock lock = distributedLockFactory.getDistributedLock(SECKILL_ACTIVITY_UPDATE_CACHE_LOCK_KEY.concat(String.valueOf(activityId)));
@@ -112,8 +112,14 @@ public class SeckillActivityCachedServiceImpl implements SeckillActivityCacheSer
             if (!isLockSuccess) {
                 return new SeckillBusinessCache<SeckillActivity>().retryLater();
             }
-            SeckillActivity seckillActivityById = seckillActivityRepository.getSeckillActivityById(activityId);
             SeckillBusinessCache<SeckillActivity> seckillBusinessCacheActivity;
+            if (doubleCheck) {
+                seckillBusinessCacheActivity = SeckillActivityBuilder.getSeckillBusinessCache(distributedCacheService.getObject(buildCacheKey(activityId)), SeckillActivity.class);
+                if (seckillBusinessCacheActivity != null) {
+                    return seckillBusinessCacheActivity;
+                }
+            }
+            SeckillActivity seckillActivityById = seckillActivityRepository.getSeckillActivityById(activityId);
             if (seckillActivityById == null) {
                 seckillBusinessCacheActivity = new SeckillBusinessCache<SeckillActivity>().notExist();
             } else {
